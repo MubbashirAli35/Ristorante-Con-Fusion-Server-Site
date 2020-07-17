@@ -7,6 +7,7 @@ router.use(bodyParser.json());
 
 const mongoose = require('mongoose');
 const User = require('../models/users');
+const authenticate = require('../authenticate');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -31,9 +32,11 @@ router.post('/signup', (req, res, next) => {
 });
 
 router.post('/login', passport.authenticate('local'), (req, res) => {
+  const token = authenticate.getToken({_id: req.user._id});
+
   res.statusCode = 200;
   res.setHeader('Content-Type', 'application/json');
-  res.json({status: 'You are successfully logged in!', success: true});
+  res.json({status: 'You are successfully logged in!', success: true, token: token});
 });
 
 router.get('/logout', (req, res, next) => {
