@@ -10,8 +10,22 @@ const User = require('../models/users');
 const authenticate = require('../authenticate');
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+router.get('/', authenticate.verifyUser, authenticate.verifyAdmin, function(req, res, next) {
+  User.find()
+  .then((users) => {
+    if(users != null) {
+      res.statusCode = 200;
+      res.setHeader('Content-Type', 'application/json');
+      res.json(users);
+
+      return;
+    }
+
+    const err = new Error('There are no registers users found');
+    err.status = 404;
+
+    return next(err);
+  })
 });
 
 router.post('/signup', (req, res, next) => {
