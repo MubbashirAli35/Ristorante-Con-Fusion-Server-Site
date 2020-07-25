@@ -70,6 +70,7 @@ router.post('/login', cors.corsWithOptions, passport.authenticate('local'), (req
 router.get('/logout', cors.corsWithOptions, (req, res, next) => {
   if(req.session) {
     req.session.destroy();
+    res.statusCode = 200;
     res.clearCookie('session-id');
     res.redirect('/');
   }

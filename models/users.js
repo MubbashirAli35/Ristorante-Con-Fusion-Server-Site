@@ -14,6 +14,10 @@ const User = new Schema({
     facebookId: {
         type: String,
     },
+    favorites: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Favorite',
+    },
     admin: {
         type: Boolean,
         default: false
