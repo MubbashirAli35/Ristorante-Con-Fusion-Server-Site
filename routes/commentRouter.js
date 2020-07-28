@@ -71,11 +71,11 @@ commentRouter.route('/:commentId')
     }, (err) => next(err))
     .catch((err) => next(err));
 })
-.post(cors.corsWithOptions, cors.verifyUser, (req, res, next) => {
+.post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
     res.statusCode = 403;
     res.end('POST operation not supported on /comments/' + req.params.commentId);
 })
-.put(cors.corsWithOptions, cors.verifyUser, (req, res, next) => {
+.put(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
     Comments.findById(req.params.commentId)
     .then((comment) => {
         if(comment != null) {
@@ -131,3 +131,5 @@ commentRouter.route('/:commentId')
         }
     }, (err) => next(err));
 })
+
+module.exports = commentRouter;
